@@ -5,14 +5,18 @@ import Link from 'next/link';
 
 mapboxgl.accessToken =
     "pk.eyJ1IjoiYmFzaXQtYmFsb2d1bjEwIiwiYSI6ImNrdm1sM2RocTB3aTcyb281cTJhNHQ2NjMifQ.MGsYHwZcN8HiDoUoj-FPIA";
-
+    const bounds = [
+        [-81.101472, 32.075529], // Southwest coordinates
+        [-81.079246, 32.082284] // Northeast coordinates
+        ];
 const Map = ({pickupCoordinates, dropoffCoordinates, displayBackButton}) => {
     useEffect(() => {
         const map = new mapboxgl.Map({
             container: "map",
             style: "mapbox://styles/drakosi/ckvcwq3rwdw4314o3i2ho8tph",
             center: [-99.29011, 39.39172],
-            zoom: 3,
+            zoom: 1,
+            maxBounds: bounds
         });
 
         (pickupCoordinates && dropoffCoordinates) && (() => {

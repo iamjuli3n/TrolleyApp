@@ -31,7 +31,7 @@ export default function Home() {
             <Map />
             <ActionItems>
                 <Header>
-                    <UberLogo src="https://i.ibb.co/84stgjq/uber-technologies-new-20218114.jpg" />
+                    <UberLogo src="https://www.kellytours.com/wp-content/uploads/2021/06/web.png" />
                     <Profile>
                         <Name>{user && user.name}</Name>
                         <UserImage
@@ -43,17 +43,17 @@ export default function Home() {
                 <ActionButtons>
                     <Link href="/search">
                         <ActionButton>
-                            <ActionButtonImage src="https://i.ibb.co/cyvcpfF/uberx.png" />
-                            Ride
+                            <ActionButtonImage src="https://key0.cc/images/preview/506329_39ab4ec36ff66aa8a7e9928086d632e5.png" />
+                            Find Trolley
                         </ActionButton>
                     </Link>
                     <ActionButton>
-                        <ActionButtonImage src="https://i.ibb.co/n776JLm/bike.png" />
-                        Wheels
+                        <ActionButtonImage src="https://pngimg.com/uploads/coin/coin_PNG36880.png" />
+                        Purchase Tokens
                     </ActionButton>
                     <ActionButton>
                         <ActionButtonImage src="https://i.ibb.co/5RjchBg/uberschedule.png" />
-                        Reserve
+                        View Trolley Schedule
                     </ActionButton>
                 </ActionButtons>
                 <InputButton>Where to?</InputButton>
