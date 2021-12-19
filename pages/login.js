@@ -16,7 +16,7 @@ const Login = () => {
 
     return (
         <Wrapper>
-            <UberLogo src="https://i.ibb.co/n6LWQM4/Post.png" />
+            <UberLogo src="https://www.kellytours.com/wp-content/uploads/2021/06/web.png" />
             <Title>Log in to access your account</Title>
             <HeadImage src="https://i.ibb.co/CsV9RYZ/login-image.png" />
             <SignInButton onClick={() => signInWithPopup(auth, provider)}>
