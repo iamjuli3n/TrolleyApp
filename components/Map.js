@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import tw from "tailwind-styled-components";
 import mapboxgl from "!mapbox-gl";
 import Link from 'next/link';
@@ -9,28 +9,50 @@ mapboxgl.accessToken =
         [-81.101472, 32.075529], // Southwest coordinates
         [-81.079246, 32.082284] // Northeast coordinates
         ];
-const Map = ({pickupCoordinates, dropoffCoordinates, displayBackButton}) => {
+const Map = ({pickupCoordinates, dropoffCoordinates, displayBackButton, stops = [], userLocation}) => {
+    const mapContainer = useRef(null);
+    const map = useRef(null);
+
     useEffect(() => {
-        const map = new mapboxgl.Map({
-            container: "map",
-            style: "mapbox://styles/drakosi/ckvcwq3rwdw4314o3i2ho8tph",
-            center: [-99.29011, 39.39172],
-            zoom: 1,
-            maxBounds: bounds
-        });
+        if (!map.current && mapContainer.current) {
+            map.current = new mapboxgl.Map({
+                container: mapContainer.current,
+                style: "mapbox://styles/drakosi/ckvcwq3rwdw4314o3i2ho8tph",
+                center: [-99.29011, 39.39172],
+                zoom: 1,
+                maxBounds: bounds
+            });
 
-        (pickupCoordinates && dropoffCoordinates) && (() => {
-            addToMap(map, pickupCoordinates);
-            addToMap(map, dropoffCoordinates);
+            // Add user location marker
+            if (userLocation) {
+                new mapboxgl.Marker({ color: '#3B82F6' })
+                  .setLngLat([userLocation.lng, userLocation.lat])
+                  .addTo(map.current);
+            }
 
-            map.fitBounds([
-                dropoffCoordinates,
-                pickupCoordinates
-            ], {
-                padding: 60
-            })
-        })();
-    }, [pickupCoordinates, dropoffCoordinates]);
+            // Add stop markers
+            stops.forEach(stop => {
+                new mapboxgl.Marker({ color: '#10B981' })
+                  .setLngLat([stop.lng, stop.lat])
+                  .setPopup(new mapboxgl.Popup().setHTML(`<h3>${stop.name}</h3><p>Next: ${stop.nextArrival}</p>`))
+                  .addTo(map.current);
+            });
+
+            (pickupCoordinates && dropoffCoordinates) && (() => {
+                addToMap(map.current, pickupCoordinates);
+                addToMap(map.current, dropoffCoordinates);
+
+                map.current.fitBounds([
+                    dropoffCoordinates,
+                    pickupCoordinates
+                ], {
+                    padding: 60
+                })
+            })();
+        }
+
+        return () => map.current?.remove();
+    }, [pickupCoordinates, dropoffCoordinates, stops, userLocation]);
 
     const addToMap = (map, coordinates) => {
         const marker1 = new mapboxgl.Marker()
@@ -39,7 +61,7 @@ const Map = ({pickupCoordinates, dropoffCoordinates, displayBackButton}) => {
     }
     
     return (
-        <Wrapper id="map">
+        <Wrapper id="map" ref={mapContainer}>
             { displayBackButton && (<ButtonContainer>
             <Link href="/search">
                 <BackButton src="https://img.icons8.com/ios-filled/50/000000/left.png" />
